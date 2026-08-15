@@ -1129,8 +1129,6 @@ class ReportSummaryView(generics.GenericAPIView):
 
 
 from django.http import HttpResponse
-import openpyxl
-from openpyxl.styles import Font, PatternFill
 
 
 class ExportExcelReportView(generics.GenericAPIView):
@@ -1138,6 +1136,12 @@ class ExportExcelReportView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, IsAdminOrSecurity]
 
     def get(self, request, *args, **kwargs):
+        try:
+            import openpyxl
+            from openpyxl.styles import Font, PatternFill
+        except ImportError:
+            return Response({"error": "openpyxl is not installed."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         queryset = apply_report_filters(request).order_by('-created_at')
 
         wb = openpyxl.Workbook()
@@ -1171,21 +1175,21 @@ class ExportExcelReportView(generics.GenericAPIView):
         return response
 
 
-
-
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import cm
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
-import io
-
-
 class ExportPdfReportView(generics.GenericAPIView):
     serializer_class = SosEmptySerializer
     permission_classes = [IsAuthenticated, IsAdminOrSecurity]
 
     def get(self, request, *args, **kwargs):
+        try:
+            from reportlab.lib import colors
+            from reportlab.lib.pagesizes import A4
+            from reportlab.lib.units import cm
+            from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+            from reportlab.lib.styles import getSampleStyleSheet
+            import io
+        except ImportError:
+            return Response({"error": "reportlab is not installed."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         queryset = apply_report_filters(request).order_by('-created_at')
 
         buffer = io.BytesIO()

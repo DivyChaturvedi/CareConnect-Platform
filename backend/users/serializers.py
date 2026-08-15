@@ -46,6 +46,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "role",
             "created_at",
         )
+        read_only_fields = ("id", "email", "role", "created_at")
 
 
 class LogoutSerializer(serializers.Serializer):

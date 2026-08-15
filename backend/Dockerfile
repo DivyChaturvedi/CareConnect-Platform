@@ -24,5 +24,5 @@ COPY . /app/
 # Expose Daphne ASGI server port
 EXPOSE 8000
 
-# Run migrations and start Daphne ASGI server
-CMD ["sh", "-c", "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 config.asgi:application"]
+# Run collectstatic, migrations and start Daphne ASGI server
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && python manage.py migrate && daphne -b 0.0.0.0 -p 8000 config.asgi:application"]

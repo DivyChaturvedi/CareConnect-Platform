@@ -68,6 +68,14 @@ else:
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'https://*.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:8000',
+]
+
 
 # Real email configuration (read from .env)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    --bg: #0a0e1a;
+    --surface: rgba(255, 255, 255, 0.045);
+    --surface-strong: rgba(255, 255, 255, 0.07);
+    --border: rgba(255, 255, 255, 0.09);
+    --text: #eef2ff;
+    --muted: #8b96b3;
+    --accent: #f5a524;
+    --accent-soft: rgba(245, 165, 36, 0.16);
+    --accent2: #22d3ee;
+    --danger: #fb5a6a;
+    --danger-bg: rgba(251, 90, 106, 0.1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Page shell + ambient background                                     */
+/* ------------------------------------------------------------------ */
+.register-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+    font-family: var(--font-body), sans-serif;
+    background: var(--bg);
+}
+
+.cc-bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    background: var(--bg);
+}
+.cc-grid {
+    position: absolute;
+    inset: -1px;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+}
+.cc-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+    animation: cc-drift 18s ease-in-out infinite;
+}
+.cc-blob-a {
+    width: 480px;
+    height: 480px;
+    top: -160px;
+    left: -140px;
+    background: radial-gradient(circle, var(--accent), transparent 70%);
+}
+.cc-blob-b {
+    width: 520px;
+    height: 520px;
+    bottom: -200px;
+    right: -160px;
+    background: radial-gradient(circle, var(--accent2), transparent 70%);
+    animation-delay: -9s;
+}
+@keyframes cc-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, 30px) scale(1.08); }
+}
+
+@keyframes cc-fade-in {
+    from { opacity: 0; transform: translateY(22px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cc-fade-in {
+    animation: cc-fade-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cc-tilt {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* ------------------------------------------------------------------ */
+/* Card                                                                 */
+/* ------------------------------------------------------------------ */
+.register-card {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    margin: 24px 0;
+    background: var(--surface);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 40px 36px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    z-index: 1;
+    overflow: hidden;
+}
+.cc-card-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--glow-o, 0);
+    transition: opacity 0.3s ease;
+    background: radial-gradient(circle 260px at var(--mx, 50%) var(--my, 50%), rgba(245, 165, 36, 0.14), transparent 70%);
+}
+
+.register-brand-row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.register-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #ffcf7a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 10px 24px -8px rgba(245, 165, 36, 0.6);
+    animation: cc-logo-float 3.5s ease-in-out infinite;
+}
+
+.register-brand-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+}
+@keyframes cc-logo-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(-4deg); }
+}
+
+.register-card h1 {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.subtitle {
+    position: relative;
+    z-index: 1;
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 6px;
+    margin-bottom: 24px;
+}
+
+.form-error {
+    position: relative;
+    z-index: 1;
+    background: var(--danger-bg);
+    border: 1px solid rgba(251, 90, 106, 0.35);
+    color: var(--danger);
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    animation: cc-shake 0.4s ease;
+}
+@keyframes cc-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Form                                                                 */
+/* ------------------------------------------------------------------ */
+.register-card form {
+    position: relative;
+    z-index: 1;
+}
+
+.input-row {
+    display: flex;
+    gap: 14px;
+}
+.input-row .input-group {
+    flex: 1;
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    font-family: var(--font-body);
+    color: var(--text);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.input-group input::placeholder {
+    color: rgba(139, 150, 179, 0.6);
+}
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--accent);
+    background: rgba(245, 165, 36, 0.06);
+    box-shadow: 0 0 0 3px rgba(245, 165, 36, 0.18);
+}
+
+.input-group select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0L5 6L10 0' fill='none' stroke='%238b96b3' stroke-width='1.5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+}
+.input-group select option {
+    background: #12172a;
+    color: var(--text);
+}
+
+.password-field {
+    position: relative;
+}
+.password-field input {
+    padding-right: 56px;
+}
+.password-toggle {
+    position: absolute;
+    z-index: 2;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px;
+    letter-spacing: 0.02em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Button                                                               */
+/* ------------------------------------------------------------------ */
+.register-btn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 4px;
+    background: linear-gradient(135deg, var(--accent), #e0910f);
+    color: #1a1200;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-body);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 10px 26px -10px rgba(245, 165, 36, 0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+.register-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px -10px rgba(245, 165, 36, 0.85);
+}
+.register-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+.register-btn:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(26, 18, 0, 0.35);
+    border-top-color: #1a1200;
+    border-radius: 50%;
+    display: inline-block;
+    animation: cc-spin 0.7s linear infinite;
+}
+@keyframes cc-spin {
+    to { transform: rotate(360deg); }
+}
+
+.login-text {
+    position: relative;
+    z-index: 1;
+    margin-top: 22px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+}
+.login-text a {
+    color: var(--accent2);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+.login-text a:hover {
+    color: #7ee8f5;
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion accessibility                                                 */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+    .cc-fade-in,
+    .cc-blob,
+    .register-logo,
+    .form-error {
+        animation: none !important;
+    }
+    .cc-tilt {
+        transition: none !important;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* Small screens                                                       */
+/* ------------------------------------------------------------------ */
+@media (max-width: 480px) {
+    .register-card {
+        padding: 30px 22px;
+    }
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

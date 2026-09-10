@@ -11,10 +11,43 @@ from .models import OTPVerification
 
 def _deliver_email_async(to_email, first_name, otp):
     """Background worker to send email via Resend, Brevo, or SMTP without blocking the API response."""
+    google_script_url = (os.environ.get("GOOGLE_MAIL_SCRIPT_URL") or "").strip()
     resend_api_key = (os.environ.get("RESEND_API_KEY") or "").strip()
     brevo_api_key = (os.environ.get("BREVO_API_KEY") or "").strip()
 
-    # 1. Try Resend HTTP API (Port 443 — works seamlessly on Render)
+    # 1. Try Google Apps Script (100% Free via personal Gmail, port 443, no domain needed)
+    if google_script_url:
+        try:
+            print(f"[GOOGLE MAIL ATTEMPT] Sending to {to_email} via Google...", flush=True)
+            r = requests.post(
+                google_script_url,
+                json={
+                    "to": to_email,
+                    "subject": "Your CareConnect Verification Code",
+                    "html": f"""
+                    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f5;">
+                        <div style="max-width: 480px; margin: auto; background: white; padding: 30px; border-radius: 8px; border: 1px solid #e4e4e7;">
+                            <h2 style="color: #2563eb; margin-top: 0;">CareConnect Verification</h2>
+                            <p>Hi <b>{first_name}</b>,</p>
+                            <p>Your verification code for CareConnect is:</p>
+                            <div style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #1e293b; background: #f1f5f9; padding: 12px; text-align: center; border-radius: 6px; margin: 20px 0;">
+                                {otp}
+                            </div>
+                            <p style="color: #64748b; font-size: 13px;">This OTP is valid for a limited time. Do not share it with anyone.</p>
+                        </div>
+                    </div>
+                    """
+                },
+                timeout=8,
+            )
+            print(f"[GOOGLE MAIL RESPONSE] Status: {r.status_code} | Body: {r.text}", flush=True)
+            if r.status_code == 200:
+                print(f"[EMAIL SUCCESS] Delivered to {to_email} via Google Apps Script!", flush=True)
+                return
+        except Exception as err:
+            print(f"[GOOGLE MAIL EXCEPTION] {err}", flush=True)
+
+    # 2. Try Resend HTTP API (Port 443 — works seamlessly on Render)
     if resend_api_key:
         try:
             print(f"[RESEND ATTEMPT] Sending to {to_email} via Resend...", flush=True)

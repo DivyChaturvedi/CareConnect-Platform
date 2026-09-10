@@ -40,6 +40,7 @@ if DATABASE_URL:
             'PASSWORD': url.password,
             'HOST': url.hostname,
             'PORT': url.port or 5432,
+            'CONN_MAX_AGE': 60,
         }
     }
 elif USE_SQLITE or (os.environ.get('RENDER') and DB_HOST == 'localhost'):
@@ -58,6 +59,7 @@ else:
             'PASSWORD': config('DB_PASSWORD', default='2580'),
             'HOST': DB_HOST,
             'PORT': config('DB_PORT', default='5432'),
+            'CONN_MAX_AGE': 60,
         }
     }
 

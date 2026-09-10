@@ -85,6 +85,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='careconnectcommunity76@gmail.com')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='CareConnect <careconnectcommunity76@gmail.com>')
+EMAIL_TIMEOUT = 3
 
 
 # Celery Configuration (read from .env)

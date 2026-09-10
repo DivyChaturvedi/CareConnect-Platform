@@ -101,14 +101,13 @@ class ResidentRegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        otp = generate_and_send_otp(user)
+        generate_and_send_otp(user)
         return Response(
             {
                 "success": True,
                 "message": "Registered. OTP sent for verification.",
                 "data": {
                     "user_id": user.id,
-                    "dev_otp": otp,
                 }
             },
             status=status.HTTP_201_CREATED
@@ -123,14 +122,13 @@ class GuardianRegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        otp = generate_and_send_otp(user)
+        generate_and_send_otp(user)
         return Response(
             {
                 "success": True,
                 "message": "Registered. OTP sent for verification.",
                 "data": {
                     "user_id": user.id,
-                    "dev_otp": otp,
                 }
             },
             status=status.HTTP_201_CREATED
@@ -144,14 +142,13 @@ class VolunteerRegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        otp = generate_and_send_otp(user)
+        generate_and_send_otp(user)
         return Response(
             {
                 "success": True,
                 "message": "Registered. OTP sent for verification.",
                 "data": {
                     "user_id": user.id,
-                    "dev_otp": otp,
                 }
             },
             status=status.HTTP_201_CREATED
@@ -165,14 +162,13 @@ class SecurityRegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        otp = generate_and_send_otp(user)
+        generate_and_send_otp(user)
         return Response(
             {
                 "success": True,
                 "message": "Registered. OTP sent for verification.",
                 "data": {
                     "user_id": user.id,
-                    "dev_otp": otp,
                 }
             },
             status=status.HTTP_201_CREATED
@@ -531,8 +527,8 @@ class ResendOTPView(generics.GenericAPIView):
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        otp = generate_and_send_otp(user)
-        return Response({"message": "OTP resent successfully", "dev_otp": otp}, status=status.HTTP_200_OK)    
+        generate_and_send_otp(user)
+        return Response({"message": "OTP resent successfully"}, status=status.HTTP_200_OK)    
     
 
 
